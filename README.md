@@ -1,0 +1,37 @@
+## What is this?
+
+A Dockerfile, docker-compose.yml and entrypoint.sh script to run a single node Kafka instance with a three node Zookeeper cluster
+
+## Usage
+
+`docker-compose up -d`
+
+Creates a network for Zookeeper and Kafka and configures Kafka to connect to Zookeeper. 
+
+Configure Kafka with the following environment variables:
+
+```
+KAFKA_BROKER_ID
+KAFKA_NUM_NETWORK_THREADS
+KAFKA_NUM_IO_THREADS
+KAFKA_SOCKET_SEND_BUFFER_BYTES
+KAFKA_SOCKET_RECEIVE_BUFFER_BYTES
+KAFKA_SOCKET_REQUEST_MAX_BYTES
+KAFKA_LOG_DIRS
+KAFKA_NUM_PARTITIONS
+KAFKA_NUM_RECOVERY_THREADS_PER_DATA_DIR
+KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+KAFKA_LOG_FLUSH_INTERVAL_MESSAGES
+KAFKA_LOG_FLUSH_INTERVAL_MS
+KAFKA_LOG_RETENTION_HOURS
+KAFKA_LOG_RETENTION_BYTES
+KAFKA_LOG_SEGMENT_BYTES
+KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS
+KAFKA_ZOOKEEPER_CONNECT
+KAFKA_ZOOKEEPER_CONNECTION_TIMEOUT_MS
+KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS
+```
+
+Reference the Zookeeper configuration variables here: https://hub.docker.com/_/zookeeper
