@@ -1,0 +1,19 @@
+- hosts: localhost
+  gather_facts: yes
+  become: yes
+  tasks:
+    - name: Disable remote host key checking
+      lineinfile:
+        path: /etc/ansible/ansible.cfg
+        line: 'host_key_checking = False'
+        regex: '^#host_key_checking = False'
+        state: present
+
+    - name: Create Zookeeper hosts block
+      blockinfile:
+        path: /etc/ansible/ansible.cfg
+        block: |
+          [zookeeper]
+          zk-1.dev.private
+          zk-2.dev.private
+          zk-3.dev.private
