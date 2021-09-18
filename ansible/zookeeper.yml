@@ -1,0 +1,66 @@
+- hosts: zookeeper
+  gather_facts: yes
+  become: yes
+  vars:
+    corretto_url: 'https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.deb'
+    zookeeper_url: 'https://dlcdn.apache.org/zookeeper/zookeeper-3.6.3/apache-zookeeper-3.6.3-bin.tar.gz'
+    zookeeper_archive: apache-zookeeper-3.6.3-bin.tar.gz
+    zookeeper_release: "3.6.3"
+  tasks:
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
+
+    - name: Install java-common
+      apt:
+        name: java-common
+        state: present
+
+    - name: Install supervisord
+      pip:
+        name: supervisor
+        state: present
+
+    - name: Install Corretto
+      apt:
+        deb: '{{ corretto_url }}'
+        state: present
+      
+    - name: Download Zookeeper
+      get_url:
+        url: '{{ zookeeper_url }}'
+        dest: /tmp/
+
+    - name: Install Zookeeper
+      unarchive:
+        src: '/tmp/{{ zookeeper_archive }}'
+        dest: /usr/local/bin/
+        remote_src: yes
+
+    - name: Symlink Zookeeper directory
+      file:
+        src: '/usr/local/bin/apache-zookeeper-{{ zookeeper_release }}-bin'
+        dest: /usr/local/bin/zookeeper
+        state: link
+
+    - name: Create Zookeeper config directory
+      file:
+        path: /etc/zookeeper/
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Template the Zookeeper config file
+      template:
+        src: templates/zookeeper-conf.j2
+        dest: /etc/zookeeper/zoo.cfg
+        owner: root
+        group: root
+        mode: 0644
+    # - name: Template zookeeper supervisord.conf
+    #   template:
+    #     src: templates/zookeeper.j2
+    #     dest: /etc/zookeeper/zookeeper.

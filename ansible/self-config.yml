@@ -11,7 +11,7 @@
 
     - name: Create Zookeeper hosts block
       blockinfile:
-        path: /etc/ansible/ansible.cfg
+        path: /etc/ansible/hosts
         block: |
           [zookeeper]
           zk-1.dev.private
