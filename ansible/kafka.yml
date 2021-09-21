@@ -4,12 +4,6 @@
   vars_files:
     - 'vars.yml'
   tasks:
-    - name: Install pip
-      apt:
-        name: python3-pip
-        state: present
-        update_cache: true
-
     - name: Install java-common
       apt:
         name: java-common
@@ -19,8 +13,20 @@
       apt:
         deb: '{{ corretto_url }}'
         state: present
-      
+
     - name: Download Kafka
       get_url:
         url: '{{ kafka_url }}'
         dest: /tmp/
+
+    - name: Install Kafka
+      unarchive:
+        src: '/tmp/{{ kafka_archive }}'
+        dest: /usr/local/bin/
+        remote_src: yes
+
+    - name: Symlink Kafka directory
+      file:
+        src: '/usr/local/bin/kafka_2.13-{{ kafka_release }}'
+        dest: /usr/local/kafka
+        state: link

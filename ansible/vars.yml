@@ -1,12 +1,26 @@
 java_release_major: 17
 zookeeper_release: '3.6.3'
-kafka_release: '2.8.0'
-corretto_url: 'https://corretto.aws/downloads/latest/amazon-corretto-{{ java_release_major}}-x64-linux-jdk.deb'
+
+## Corretto
+corretto_url: 'https://corretto.aws/downloads/latest/amazon-corretto-{{ java_release_major }}-x64-linux-jdk.deb'
+
+## Kafka vars
+kafka_release: '2.8.1'
 kafka_url: 'https://dlcdn.apache.org/kafka/{{ kafka_release }}/kafka_2.13-{{ kafka_release }}.tgz'
+kafka_archive: 'kafka_2.13-{{ kafka_release }}.tgz'
+
+## Zookeeper vars
 zookeeper_url: 'https://dlcdn.apache.org/zookeeper/zookeeper-{{ zookeeper_release }}/apache-zookeeper-{{ zookeeper_release }}-bin.tar.gz'
 zookeeper_archive: 'apache-zookeeper-{{ zookeeper_release }}-bin.tar.gz'
-zookeeper_data_dir: "/var/lib/zookeeper"
+zookeeper_data_dir: '/var/lib/zookeeper'
+
 zookeeper_ids:
   zk-1: 1
   zk-2: 2
   zk-3: 3
+
+hosts_block: |
+  [zookeeper]
+  zk-[1:3].dev.private
+  [kafka]
+  kafka-[1:3].dev.private

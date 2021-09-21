@@ -4,27 +4,16 @@
   vars_files:
     - "vars.yml"
   tasks:
-    - name: Install pip
-      apt:
-        name: python3-pip
-        state: present
-        update_cache: true
-
     - name: Install java-common
       apt:
         name: java-common
-        state: present
-
-    - name: Install supervisord
-      pip:
-        name: supervisor
         state: present
 
     - name: Install Corretto
       apt:
         deb: '{{ corretto_url }}'
         state: present
-      
+
     - name: Download Zookeeper
       get_url:
         url: '{{ zookeeper_url }}'
@@ -45,6 +34,14 @@
     - name: Create Zookeeper config directory
       file:
         path: /etc/zookeeper/
+        owner: root
+        group: root
+        mode: 0755
+        state: directory
+
+    - name: Create Zookeeper config directory
+      file:
+        path: /var/lib/zookeeper/
         owner: root
         group: root
         mode: 0755

@@ -1,6 +1,8 @@
 - hosts: localhost
   gather_facts: yes
   become: yes
+  vars_files:
+    - 'vars.yml'
   tasks:
     - name: Disable remote host key checking
       lineinfile:
@@ -12,8 +14,4 @@
     - name: Create Zookeeper hosts block
       blockinfile:
         path: /etc/ansible/hosts
-        block: |
-          [zookeeper]
-          zk-1.dev.private
-          zk-2.dev.private
-          zk-3.dev.private
+        block: '{{ hosts_block }}'
