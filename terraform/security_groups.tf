@@ -56,10 +56,17 @@ resource "aws_security_group" "zk_sg" {
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+}
+
+resource "aws_security_group" "kafka" {
+  name        = join("", [var.user_name, "-", "kafka", "-", "communication"])
+  description = "Allow Kafka communications"
+  vpc_id      = aws_vpc.kafka.id
+  ingress {
+    description = "Kafka TCP port"
+    from_port = 9092
+    to_port = 9092
+    protocol = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
