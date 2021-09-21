@@ -1,11 +1,8 @@
 - hosts: zookeeper
   gather_facts: yes
   become: yes
-  vars:
-    corretto_url: 'https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.deb'
-    zookeeper_url: 'https://dlcdn.apache.org/zookeeper/zookeeper-3.6.3/apache-zookeeper-3.6.3-bin.tar.gz'
-    zookeeper_archive: apache-zookeeper-3.6.3-bin.tar.gz
-    zookeeper_release: "3.6.3"
+  vars_files:
+    - "vars.yml"
   tasks:
     - name: Install pip
       apt:
@@ -60,7 +57,30 @@
         owner: root
         group: root
         mode: 0644
-    # - name: Template zookeeper supervisord.conf
-    #   template:
-    #     src: templates/zookeeper.j2
-    #     dest: /etc/zookeeper/zookeeper.
+        
+    - name: Template the Zookeeper myid file
+      template:
+        src: templates/zookeeper-myid.j2
+        dest: "{{zookeeper_data_dir}}/myid"
+
+    - name: Sync the systemd zookeeper unit file
+      copy:
+        src: templates/zookeeper-unit.j2
+        dest: /usr/lib/systemd/system/zookeeper.service
+      notify:
+        - restart-zookeeper
+
+    - name: Start Zookeeper service
+      systemd:
+        name: zookeeper
+        state: started
+        daemon-reload: True
+
+  handlers:
+    - name: Restart zookeeper
+      systemd:
+        name: zookeeper
+        state: restarted
+        daemon-reload: true
+      listen:
+        - restart-zookeeper

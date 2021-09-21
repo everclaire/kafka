@@ -1,0 +1,26 @@
+- hosts: kafka
+  gather_facts: yes
+  become: yes
+  vars_files:
+    - 'vars.yml'
+  tasks:
+    - name: Install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: true
+
+    - name: Install java-common
+      apt:
+        name: java-common
+        state: present
+
+    - name: Install Corretto
+      apt:
+        deb: '{{ corretto_url }}'
+        state: present
+      
+    - name: Download Kafka
+      get_url:
+        url: '{{ kafka_url }}'
+        dest: /tmp/

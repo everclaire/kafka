@@ -1,0 +1,11 @@
+[Unit]
+Description=ZooKeeper Service
+Documentation=http://zookeeper.apache.org
+Requires=network.target
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/zookeeper/bin/zkServer.sh start /etc/zookeeper/zoo.cfg
+ExecStop=/usr/local/bin/zookeeper/zkServer.sh stop /etc/zookeeper/zoo.cfg
+ExecReload=/usr/local/bin/zookeeper/zkServer.sh restart /etc/zookeeper/zoo.cfg
