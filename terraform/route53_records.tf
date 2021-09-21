@@ -5,7 +5,7 @@ resource "aws_route53_record" "orchestrate" {
   ttl     = 300
   records = [aws_instance.orchestrate.private_ip]
 }
-
+##
 resource "aws_route53_record" "zk_1" {
   zone_id = aws_route53_zone.dev_private.id
   name    = "zk-1"
@@ -28,4 +28,28 @@ resource "aws_route53_record" "zk_3" {
   type    = "A"
   ttl     = 300
   records = [aws_instance.zk_3.private_ip]
+}
+##
+resource "aws_route53_record" "kafka_1" {
+  zone_id = aws_route53_zone.dev_private.id
+  name    = "kafka-1"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.kafka_1.private_ip]
+}
+
+resource "aws_route53_record" "kafka_2" {
+  zone_id = aws_route53_zone.dev_private.id
+  name    = "kafka-2"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.kafka_2.private_ip]
+}
+
+resource "aws_route53_record" "kafka_3" {
+  zone_id = aws_route53_zone.dev_private.id
+  name    = "kafka-3"
+  type    = "A"
+  ttl     = 300
+  records = [aws_instance.kafka_3.private_ip]
 }
