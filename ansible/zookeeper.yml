@@ -2,7 +2,7 @@
   gather_facts: yes
   become: yes
   vars_files:
-    - "vars.yml"
+    - 'vars.yml'
   tasks:
     - name: Install java-common
       apt:
